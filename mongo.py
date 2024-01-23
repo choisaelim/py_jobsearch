@@ -6,19 +6,21 @@ class MongoDB:
         self.client = MongoClient(mongoUrl)
         self.db = self.client.local
         self.collection = self.db['jobs']
+        self.comps = self.db['comps']
         print(self.collection)
 
     def insertList(self, list):
-        result = self.collection.insert_many(list)
+        result = self.collection.insert_many(list, ordered=False)
     def insertOne(self, item):
         result = self.collection.insert_one(item)
     def selectAll(self):
-        self.collection.find()
-# doc = {
-#     'title':'플랫폼베이스 백엔드 개발',
-#     'comp':'아프리카TV'
-# }
+        return self.collection.find()
+    def selectDistinct(self, key):
+        result = self.collection.distinct(key)
+        return result
 
+    def inserCompList(self, list):
+        result = self.comps.insert_many(list, ordered=False)
 # db.jobs.insert_one(doc)
 
 # all_jobs = list(db.jobs.find({}, {'_id':False}))
